@@ -11,7 +11,7 @@ export type Topic =
   | 'geometria-piano'
   | 'geometria-spazio';
 
-export type Difficulty = 'facile' | 'media' | 'difficile';
+export type Difficulty = 'facile' | 'media' | 'difficile' | 'difficile-plus';
 export type QuizMode = 'allenamento' | 'esame';
 
 export type Question = {

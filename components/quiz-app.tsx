@@ -27,6 +27,7 @@ const difficulties: { value: Difficulty; label: string }[] = [
   { value: 'facile', label: 'Facile' },
   { value: 'media', label: 'Media' },
   { value: 'difficile', label: 'Difficile' },
+  { value: 'difficile-plus', label: 'Difficile Plus' },
 ];
 
 const modes: { value: QuizMode; label: string; description: string }[] = [
@@ -405,7 +406,7 @@ export function QuizApp() {
                   })}
                 </div>
                 <p className="mt-2 text-xs text-slate-500">
-                  Se non selezioni nulla, il quiz pesca da facile, media e difficile.
+                  Se non selezioni nulla, il quiz pesca da facile, media, difficile e difficile plus.
                 </p>
               </div>
             </div>
@@ -450,7 +451,7 @@ export function QuizApp() {
                 <li>Allenamento per capire subito gli errori.</li>
                 <li>Esame per simulare una mini prova a tempo libero.</li>
                 <li>Filtro per argomento quando vuoi fare recupero mirato.</li>
-                <li>Le domande difficili ora richiedono davvero un passaggio logico o di calcolo.</li>
+                <li>Il blocco difficile plus punta a quesiti che collegano piu argomenti insieme.</li>
               </ul>
             </div>
 

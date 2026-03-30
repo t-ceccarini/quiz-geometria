@@ -13,31 +13,84 @@ type Token = {
   value: string;
 };
 
-function parseMath(text: string): Token[] {
-  const tokens: Token[] = [];
-  const regex = /(\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\\]|\\\([\s\S]+?\\\))/g;
-  let lastIndex = 0;
-  let match: RegExpExecArray | null;
-
-  while ((match = regex.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      tokens.push({ type: 'text', value: text.slice(lastIndex, match.index) });
+function findClosingDelimiter(text: string, start: number, delimiter: string): number {
+  for (let index = start; index < text.length; index += 1) {
+    if (text[index] === '\\') {
+      index += 1;
+      continue;
     }
 
-    const raw = match[0];
-    const isDisplay = raw.startsWith('$$') || raw.startsWith('\\[');
-    let value = raw;
-
-    if (raw.startsWith('$$')) value = raw.slice(2, -2);
-    else if (raw.startsWith('\\[')) value = raw.slice(2, -2);
-    else if (raw.startsWith('\\(')) value = raw.slice(2, -2);
-
-    tokens.push({ type: isDisplay ? 'display' : 'inline', value: value.trim() });
-    lastIndex = regex.lastIndex;
+    if (text.startsWith(delimiter, index)) {
+      return index;
+    }
   }
 
-  if (lastIndex < text.length) {
-    tokens.push({ type: 'text', value: text.slice(lastIndex) });
+  return -1;
+}
+
+function parseMath(text: string): Token[] {
+  const tokens: Token[] = [];
+  let buffer = '';
+  let index = 0;
+
+  while (index < text.length) {
+    if (text[index] === '\\' && index + 1 < text.length) {
+      buffer += text.slice(index, index + 2);
+      index += 2;
+      continue;
+    }
+
+    let closingDelimiter = '';
+    let openingLength = 0;
+    let type: Token['type'] | null = null;
+
+    if (text.startsWith('$$', index)) {
+      closingDelimiter = '$$';
+      openingLength = 2;
+      type = 'display';
+    } else if (text.startsWith('\\[', index)) {
+      closingDelimiter = '\\]';
+      openingLength = 2;
+      type = 'display';
+    } else if (text.startsWith('\\(', index)) {
+      closingDelimiter = '\\)';
+      openingLength = 2;
+      type = 'inline';
+    } else if (text[index] === '$' && text[index + 1] !== '$') {
+      closingDelimiter = '$';
+      openingLength = 1;
+      type = 'inline';
+    }
+
+    if (!type) {
+      buffer += text[index];
+      index += 1;
+      continue;
+    }
+
+    const closingIndex = findClosingDelimiter(text, index + openingLength, closingDelimiter);
+
+    if (closingIndex === -1) {
+      buffer += text[index];
+      index += 1;
+      continue;
+    }
+
+    if (buffer) {
+      tokens.push({ type: 'text', value: buffer });
+      buffer = '';
+    }
+
+    tokens.push({
+      type,
+      value: text.slice(index + openingLength, closingIndex).trim(),
+    });
+
+    index = closingIndex + closingDelimiter.length;
+  }
+
+  if (buffer) {
+    tokens.push({ type: 'text', value: buffer });
   }
 
   return tokens;
