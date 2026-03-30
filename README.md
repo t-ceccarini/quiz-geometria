@@ -81,4 +81,3 @@ prompt: 'Calcola il determinante di $$\\begin{pmatrix}1 & 2\\\\3 & 4\\end{pmatri
 - Le statistiche dei quiz vengono salvate solo nel browser locale.
 - Non c’è ancora login.
 - Non c’è ancora database.
-- Il deploy lo puoi fare più avanti, quando la versione ti convince davvero.

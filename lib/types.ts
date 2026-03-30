@@ -6,6 +6,8 @@ export type Topic =
   | 'basi-dimensione'
   | 'applicazioni-lineari'
   | 'autovalori'
+  | 'diagonalizzazione'
+  | 'teorema-spettrale'
   | 'geometria-piano'
   | 'geometria-spazio';
 

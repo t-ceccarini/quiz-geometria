@@ -17,6 +17,8 @@ const topics: { value: Topic; label: string }[] = [
   { value: 'basi-dimensione', label: 'Basi e dimensione' },
   { value: 'applicazioni-lineari', label: 'Applicazioni lineari' },
   { value: 'autovalori', label: 'Autovalori' },
+  { value: 'diagonalizzazione', label: 'Diagonalizzazione' },
+  { value: 'teorema-spettrale', label: 'Teorema spettrale' },
   { value: 'geometria-piano', label: 'Geometria nel piano' },
   { value: 'geometria-spazio', label: 'Geometria nello spazio' },
 ];
